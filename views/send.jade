@@ -1,0 +1,23 @@
+extends layout
+
+block content
+    h2 Send Message
+    form(name="send_message", action="/push",  method="post")
+        div.input
+            span.label Title
+            br
+            input(name="title", type="text", width="400px")
+        br
+        div.input
+            span.label Message
+            br
+            textarea(name="message", type="description")
+        br
+        div.input 
+            span.label URL
+            br
+            input(name="url", type="text")
+        br
+        div.actions
+            br
+            input(type="submit", value="Send")

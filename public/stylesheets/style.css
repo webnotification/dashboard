@@ -6,3 +6,15 @@ body {
 a {
   color: #00B7FF;
 }
+
+input[type="text"] {
+height: 15px;
+width: 200px;
+}
+
+textarea {
+    width: 200px;
+    height: 100px;
+}
+
+

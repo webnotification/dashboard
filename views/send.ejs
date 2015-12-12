@@ -1,30 +1,18 @@
-<!doctype html>
+<!-- views/send.ejs -->
 <html>
 <head>
-    <title>Node Authentication</title>
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css"> <!-- load bootstrap css -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css"> <!-- load fontawesome -->
-    <style>
-        body        { padding-top:80px; }
-
-        .container {
-            width: 500px;
-            clear: both;
-        }
-        .container input {
-            width: 100%;
-            clear: both;
-        }
-        
-        .container textarea {
-            width: 100%;
-            height: 200px;
-            clear: both;
-        }
-    </style>
+    <title>Send Message</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 </head>
+
 <body>
-    <div class="container">
+    <div id='main'>
+    <script type="text/babel">
+    React.render(
+    <div>
         <h2> Send Message </h2>
         <form name="send_message" action="/push"  method="post">
             <div> 
@@ -43,6 +31,9 @@
                 <input type="submit" value="Send"></input>
             </div>
         </form>
+    </div>,
+    document.getElementById('main'));
+    </script>
     </div>
 </body>
 </html>

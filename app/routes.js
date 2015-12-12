@@ -64,13 +64,15 @@ module.exports = function(app, passport) {
 
 
     //Send message
+    app.get('/send', function(req, res, next) {
+            res.render('send.ejs', { title: 'Send' });
+        });
     
-
-    var path = require('path');
-    console.log(__dirname);
-    var send = require('./../routes/send');
-    app.use('/send', send);
-
+    //Push message
+    app.post('/push', function(req, res){
+        res.send(req.body);
+    })
+    
 };
 
 // route middleware to make sure a user is logged in

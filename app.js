@@ -1,40 +1,46 @@
-var express = require('express');
-var path = require('path');
-var favicon = require('serve-favicon');
-var logger = require('morgan');
+// server.js
+
+// set up ======================================================================
+// get all the tools we need
+var express  = require('express');
+var app      = express();
+var port     = process.env.PORT || 8080;
+var mongoose = require('mongoose');
+var passport = require('passport');
+var flash    = require('connect-flash');
+
+var morgan       = require('morgan');
 var cookieParser = require('cookie-parser');
-var bodyParser = require('body-parser');
-//GET
-var routes = require('./routes/index');
-var users = require('./routes/users');
-var send = require('./routes/send');
+var bodyParser   = require('body-parser');
+var session      = require('express-session');
 
-var app = express();
+var configDB = require('./config/database.js');
 
-//testing passport
+// configuration ===============================================================
+mongoose.connect(configDB.url); // connect to our database
 
-//passport end
+require('./config/passport')(passport); // pass passport for configuration
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+// set up our express application
+app.use(morgan('dev')); // log every request to the console
+app.use(cookieParser()); // read cookies (needed for auth)
 
-// uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.set('view engine', 'ejs'); // set up ejs for templating
 
-app.use('/', routes);
-app.use('/users', users);
-app.use('/send', send);
+// required for passport
+app.use(session({
+    secret: 'cookie_secret_replace_with_actual_secret',
+    resave: true,
+    saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session()); // persistent login sessions
+app.use(flash()); // use connect-flash for flash messages stored in session
 
-//POST
-app.post('/push', function(req, res){
-    res.send(req.body);
-})
+// routes ======================================================================
+require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -66,6 +72,5 @@ app.use(function(err, req, res, next) {
     error: {}
   });
 });
-
 
 module.exports = app;

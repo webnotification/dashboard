@@ -6,6 +6,7 @@ module.exports = function(app, passport) {
     // =====================================
     app.get('/', function(req, res) {
         res.render('index.ejs');
+        //res.render('index.jade');
     });
 
     // =====================================
@@ -59,6 +60,17 @@ module.exports = function(app, passport) {
         req.logout();
         res.redirect('/');
     });
+
+
+
+    //Send message
+    
+
+    var path = require('path');
+    console.log(__dirname);
+    var send = require('./../routes/send');
+    app.use('/send', send);
+
 };
 
 // route middleware to make sure a user is logged in

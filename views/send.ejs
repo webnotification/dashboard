@@ -15,6 +15,10 @@
     <div>
         <h2> Send Message </h2>
         <form name="send_message" action="/push"  method="post">
+            <div>
+                <label>Website</label>
+                <input name="website" type="text" value="<%=website%>"></input>
+            </div>
             <div> 
                 <label>Title</label>
                 <input name="title"  type="text"  width="400px"></input>
@@ -23,13 +27,16 @@
                 <label>Message</label>
                 <textarea name="message" type="description"></textarea>
             </div>
-            <div> 
-                <label>URL</label>
-                <input name="url" type="text"></input>
+            <div>
+                <label>Target URL</label>
+                <input name="target url" type="text"></input>
             </div>
             <div>
                 <input type="submit" value="Send"></input>
             </div>
+        </form>
+        <form action="javascript:history.back()" method="get">
+            <button>Back</button>
         </form>
     </div>,
     document.getElementById('main'));

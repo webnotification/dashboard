@@ -1,4 +1,6 @@
 // app/routes.js
+var request = require('request');
+
 module.exports = function(app, passport) {
 
     // =====================================
@@ -65,12 +67,22 @@ module.exports = function(app, passport) {
 
     //Send message
     app.get('/send', function(req, res, next) {
-            res.render('send.ejs', { title: 'Send' });
+            res.render('send.ejs', { title: 'Send', website: req.user.local.website });
         });
     
     //Push message
     app.post('/push', function(req, res){
-        res.send(req.body);
+        request.post(
+            'http://192.168.0.110:3000/send_client_data',
+            { form: req.body },
+            function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    console.log(body)
+                }
+            }
+        );
+        //res.send("Message successfully sent.");
+        res.render('sent.ejs');
     })
     
 };

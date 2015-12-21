@@ -14,30 +14,19 @@
     React.render(
     <div>
         <h2> Send Message </h2>
-        <form name="send_message" action="/push"  method="post">
+        <form name="send_message" action="/create_group"  method="post">
             <div>
                 <label>Website</label>
                 <input name="website" type="text" value="<%=website%>"></input>
             </div>
-            <div>
-                <label>Group</label>
-                <select>
-                    <% for(var i=0; i<groups.length; i++) {%>
-                        <option value= "<%= groups[i] %>" > <%= groups[i] %>  </option>
-                    <% } %>   
-                </select>
-            </div>
             <div> 
-                <label>Title</label>
-                <input name="title"  type="text"  width="400px"></input>
+                <label>Group Name</label>
+                <input name="group_name"  type="text"  width="400px"></input>
+                <label><font color="red"><%=err_msg%></font></label>
             </div>
             <div>
-                <label>Message</label>
-                <textarea name="message" type="description"></textarea>
-            </div>
-            <div>
-                <label>Target URL</label>
-                <input name="target_url" type="text"></input>
+                <label>Percentage of total users</label>
+                <input name="percentage" type="text"></input>
             </div>
             <div>
                 <input type="submit" value="Send"></input>

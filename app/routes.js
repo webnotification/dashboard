@@ -67,13 +67,56 @@ module.exports = function(app, passport) {
 
     //Send message
     app.get('/send', function(req, res, next) {
-            res.render('send.ejs', { title: 'Send', website: req.user.local.website });
+            var url = 'http://127.0.0.1:8000/notification/get_groups';
+            params = {'website': req.user.local.website}
+            request({url: url, qs: params}, function (error, response, body) {
+                    if (!error && response.statusCode == 200) {
+                            groups = JSON.parse(body)['groups'];
+                            res.render('send.ejs', { title: 'Send', website: req.user.local.website, groups: groups });
+                        }
+                    else{
+                            res.render('profile.ejs');
+                    }
+                });
+        });
+    
+    //Create group
+    app.get('/create_group', function(req, res, next) {
+            res.render('create_group.ejs', { title: 'Create group', website: req.user.local.website, err_msg: '' });
+        });
+    
+    app.post('/create_group', function(req, res, next) {
+            var get_groups_url = 'http://127.0.0.1:8000/notification/get_groups';
+            params = {'website': req.user.local.website}
+            
+            request({url: get_groups_url, qs: params}, function (error, response, body) {
+                    if (!error && response.statusCode == 200) {
+                        groups = JSON.parse(body)['groups'];
+                        if(groups.indexOf(req.body.group_name) == -1){
+                            var url = 'http://127.0.0.1:8000/notification/generate_group';
+                            request({url: url, qs: req.body}, function (error, response, body) {
+                            if (!error && response.statusCode == 200) {
+                                console.log(body)
+                            }
+                            });
+                            res.render('group_created.ejs');
+                        }
+                        else{
+                            res.render('create_group.ejs',  
+                                    { title: 'Create group', website: req.user.local.website, err_msg: '*group name already exists.' });
+                        }
+                    }
+                    else{
+                            res.render('create_group.ejs',  { title: 'Create group', website: req.user.local.website, err_msg: "" });
+                    }
+            });
+            
         });
     
     //Push message
     app.post('/push', function(req, res){
         request.post(
-            'http://192.168.0.110:3000/send_client_data',
+            'http://127.0.0.1:8000/notification/send_notification',
             { form: req.body },
             function (error, response, body) {
                 if (!error && response.statusCode == 200) {

@@ -14,7 +14,7 @@
     React.render(
     <div>
         <h2> Send Message </h2>
-        <form name="send_message" action="/push"  method="post">
+        <form name="send_message" action="/send"  method="post">
             <div>
                 <label>Website</label>
                 <input name="website" type="text" value="<%=website%>"></input>
@@ -23,7 +23,7 @@
                 <label>Group</label>
                 <select>
                     <% for(var i=0; i<groups.length; i++) {%>
-                        <option value= "<%= groups[i] %>" > <%= groups[i] %>  </option>
+                        <option value= "<%= groups[i].group_name %>" > <%= groups[i].group_name %>(<%= groups[i].percentage %>%) </option>
                     <% } %>   
                 </select>
             </div>

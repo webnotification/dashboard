@@ -1,11 +1,6 @@
 // app/routes.js
 var request = require('request');
-
-// urls
-var base_url = 'http://127.0.0.1:8000/notification'; 
-var get_groups_url = base_url + '/get_groups';
-var generate_group_url = base_url + '/generate_group';
-var send_notification_url = base_url + '/send_notification';
+var config = require('./../config/config');
 
 module.exports = function(app, passport) {
 
@@ -46,21 +41,21 @@ module.exports = function(app, passport) {
 
     //Send message
     app.get('/send', function(req, res, next) {
-            params = {'website': req.user.local.website}
-            request({url: get_groups_url, qs: params}, function (error, response, body) {
-                if (!error && response.statusCode == 200) {
-                        groups = JSON.parse(body)['groups'];
-                        res.render('send.ejs', { title: 'Send', website: req.user.local.website, groups: groups });
-                    }
-                else{
-                        res.render('profile.ejs');
+        params = {'website': req.user.local.website}
+        request({url: config.get_groups_url, qs: params}, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                    groups = JSON.parse(body)['groups'];
+                    res.render('send.ejs', { title: 'Send', website: req.user.local.website, groups: groups });
                 }
-            });
+            else{
+                    res.render('profile.ejs');
+            }
+        });
     });
     
     app.post('/send', function(req, res){
         request.post(
-            send_notification_url,
+            config.send_notification_url,
             { form: req.body },
             function (error, response, body) {
                 if (!error && response.statusCode == 200) {
@@ -78,7 +73,7 @@ module.exports = function(app, passport) {
     });
     
     app.post('/create_group', function(req, res, next) {
-        request({url: generate_group_url, qs: req.body}, function (error, response, body) {
+        request({url: config.generate_group_url, qs: req.body}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 if(JSON.parse(body).error == 'IntegrityError'){
                     res.render('create_group.ejs', { 
@@ -96,7 +91,7 @@ module.exports = function(app, passport) {
    
     app.get('/view_groups', function(req, res){
         params = {'website': req.user.local.website}
-        request({url: get_groups_url, qs: params}, function (error, response, body) {
+        request({url: config.get_groups_url, qs: params}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                     groups = JSON.parse(body)['groups'];
                     res.render('view_groups.ejs', { website: req.user.local.website, groups: groups});

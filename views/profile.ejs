@@ -1,0 +1,32 @@
+<!-- views/profile.ejs -->
+<!doctype html>
+<html>
+<head>
+    <title>Profile</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+</head>
+<body>
+<div id='main'>
+<script type="text/babel">
+   React.render( 
+    <div>
+        <div>
+            <h2> Profile </h2>
+            <h5><strong>id</strong>: <%= user._id %></h5>
+            <h5><strong>email</strong>: <%= user.local.email %></h5>
+            <h5><strong>website</strong>: <%= user.local.website %></h5>
+            <h4><a href="/send"> Send message to customers.</a></h4>
+            <h4><a href="/create_group"> Create group.</a></h4>
+            <h4><a href="/view_groups"> View groups.</a></h4>
+            <h4><a href="/logout">Logout</a></h4>
+        </div>
+    </div>,
+    document.getElementById('main'));
+</script>
+</div>
+</body>
+</html>

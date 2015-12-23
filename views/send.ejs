@@ -1,0 +1,55 @@
+<!-- views/send.ejs -->
+<html>
+<head>
+    <title>Send Message</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <div id='main'>
+    <script type="text/babel">
+    React.render(
+    <div>
+        <h2> Send Message </h2>
+        <form name="send_message" action="/send"  method="post">
+            <div>
+                <label>Website</label>
+                <input name="website" type="text" value="<%=website%>"></input>
+            </div>
+            <div>
+                <label>Group</label>
+                <select>
+                    <% for(var i=0; i<groups.length; i++) {%>
+                        <option value= "<%= groups[i].group_name %>" > <%= groups[i].group_name %>(<%= groups[i].percentage %>%) </option>
+                    <% } %>   
+                </select>
+            </div>
+            <div> 
+                <label>Title</label>
+                <input name="title"  type="text"  width="400px"></input>
+            </div>
+            <div>
+                <label>Message</label>
+                <textarea name="message" type="description"></textarea>
+            </div>
+            <div>
+                <label>Target URL</label>
+                <input name="target_url" type="text"></input>
+            </div>
+            <div>
+                <input type="submit" value="Send"></input>
+            </div>
+        </form>
+        <form action="javascript:history.back()" method="get">
+            <button>Back</button>
+        </form>
+    </div>,
+    document.getElementById('main'));
+    </script>
+    </div>
+</body>
+</html>
+

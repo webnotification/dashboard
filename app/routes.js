@@ -39,13 +39,13 @@ module.exports = function(app, passport) {
         res.redirect('/');
     });
 
-    //Send message
-    app.get('/send', function(req, res, next) {
+    //Send notification
+    app.get('/send_notification', function(req, res, next) {
         params = {'website': req.user.local.website}
         request({url: config.get_groups_url, qs: params}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                     groups = JSON.parse(body)['groups'];
-                    res.render('send.ejs', { title: 'Send', website: req.user.local.website, groups: groups });
+                    res.render('send_notification.ejs', { title: 'Send', website: req.user.local.website, groups: groups });
                 }
             else{
                     res.render('profile.ejs');
@@ -53,7 +53,7 @@ module.exports = function(app, passport) {
         });
     });
     
-    app.post('/send', function(req, res){
+    app.post('/send_notification', function(req, res){
         request.post(
             config.send_notification_url,
             { form: req.body },
@@ -63,7 +63,35 @@ module.exports = function(app, passport) {
                 }
             }
         );
-        res.render('sent.ejs');
+        res.render('sent_notification.ejs');
+    })
+    
+    
+    //Send permission request
+    app.get('/send_permission_request', function(req, res, next) {
+        params = {'website': req.user.local.website}
+        request({url: config.get_groups_url, qs: params}, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                    groups = JSON.parse(body)['groups'];
+                    res.render('send_permission.ejs', { title: 'Send', website: req.user.local.website, groups: groups });
+                }
+            else{
+                    res.render('profile.ejs');
+            }
+        });
+    });
+    
+    app.post('/send_permission_request', function(req, res){
+        request.post(
+            config.send_permission_url,
+            { form: req.body },
+            function (error, response, body) {
+                if (!error && response.statusCode == 200) {
+                    console.log(body);
+                }
+            }
+        );
+        res.render('sent_permission.ejs');
     })
     
     
@@ -101,6 +129,10 @@ module.exports = function(app, passport) {
             }
         });
     });
+
+    app.get('/analytics', function(req, res){
+        res.render('analytics.ejs');
+    })
 
 };
 

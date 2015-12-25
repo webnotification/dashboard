@@ -1,23 +1,15 @@
 <!-- views/analytics.ejs -->
 <html>
 <head>
-    <title>View Analytics</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/0.14.3/react-dom.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+    <title> <%= title %> </title>
 </head>
-
 <body>
     <div id='main'>
-    <script type="text/babel">
-    React.render(
-        <div>
-            <h3> Hello World!  </h3>
-        </div>,
-    document.getElementById('main'));
-    </script>
     </div>
+    <script>
+        var data = <%- JSON.stringify(data) %>;
+    </script>
+    <script src="javascripts/analytics_final.js"></script>
 </body>
 </html>
 

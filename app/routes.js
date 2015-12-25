@@ -131,7 +131,12 @@ module.exports = function(app, passport) {
     });
 
     app.get('/analytics', function(req, res){
-        res.render('analytics.ejs');
+        params = {"website": req.user.local.website}
+        request({url: config.get_notification_analytics_url, qs: params}, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                    res.render('analytics.ejs', {title: 'Analytics', data: JSON.parse(body)});
+                }
+        });
     })
 
 };

@@ -22427,12 +22427,17 @@ module.exports = require('./lib/React');
 }.call(this));
 
 },{}],174:[function(require,module,exports){
-
 var React = require('react');
 var ReactDOM = require('react-dom');
 var Griddle = require('griddle-react');
 
-ReactDOM.render(React.createElement(Griddle, { results: data.notifications }), document.getElementById('main'));
+ReactDOM.render(React.createElement(Griddle, { results: data.notifications,
+    tableClassName: 'table',
+    showFilter: true,
+    showSettings: true,
+    columns: ["title", "group", "target_url", "timestamp", "accept", "reject"],
+    resultsPerPage: 20
+}), document.getElementById('main'));
 
 },{"griddle-react":41,"react":172,"react-dom":43}],175:[function(require,module,exports){
 // shim for using process in browser

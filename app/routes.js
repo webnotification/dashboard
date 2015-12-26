@@ -130,11 +130,20 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.get('/analytics', function(req, res){
+    app.get('/permission_analytics', function(req, res){
+        params = {"website": req.user.local.website}
+        request({url: config.get_permission_analytics_url, qs: params}, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                    res.render('permission_analytics.ejs', {title: 'Analytics', data: JSON.parse(body)});
+                }
+        });
+    })
+
+    app.get('/notification_analytics', function(req, res){
         params = {"website": req.user.local.website}
         request({url: config.get_notification_analytics_url, qs: params}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
-                    res.render('analytics.ejs', {title: 'Analytics', data: JSON.parse(body)});
+                    res.render('notification_analytics.ejs', {title: 'Analytics', data: JSON.parse(body)});
                 }
         });
     })

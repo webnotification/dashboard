@@ -5,5 +5,6 @@ module.exports = {
     generate_group_url : base_url + '/generate_group',
     send_notification_url : base_url + '/send_notification',
     send_permission_url : base_url + '/send_permission_message',
-    get_notification_analytics_url : base_url + '/get_notification_analytics'
+    get_notification_analytics_url : base_url + '/get_notification_analytics',
+    get_permission_analytics_url : base_url + '/get_permission_analytics'
 }

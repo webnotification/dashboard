@@ -22435,7 +22435,7 @@ ReactDOM.render(React.createElement(Griddle, { results: data.permissions,
     tableClassName: 'table',
     showFilter: true,
     showSettings: true,
-    columns: ["timestamp", "accept", "reject"],
+    columns: ["group", "timestamp", "accept", "reject"],
     resultsPerPage: 20
 }), document.getElementById('main'));
 

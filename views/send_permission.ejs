@@ -21,9 +21,9 @@
             </div>
             <div>
                 <label>Group</label>
-                <select name="group_name">
+                <select name="group_id">
                     <% for(var i=0; i<groups.length; i++) {%>
-                        <option value= "<%= groups[i].group_name %>" > <%= groups[i].group_name %>(<%= groups[i].percentage %>%) </option>
+                        <option value= "<%= groups[i].id %>" > <%= groups[i].name %>(<%= groups[i].percentage %>%) </option>
                     <% } %>   
                 </select>
             </div>

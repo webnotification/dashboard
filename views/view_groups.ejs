@@ -17,7 +17,7 @@
             <label>Groups</label>
             <ol>
                 <% for(var i=0; i<groups.length; i++) {%>
-                    <li> <%= groups[i].group_name %> <%= groups[i].percentage %>% </li>
+                    <li> <%= groups[i].name %> <%= groups[i].percentage %>% </li>
                 <% } %>   
             </ol>
             <form action="/profile" method="get">

@@ -41,7 +41,7 @@ module.exports = function(app, passport) {
 
     //Send notification
     app.get('/send_notification', function(req, res, next) {
-        params = {'website': req.user.local.website}
+        params = {'client_id': req.user.id}
         request({url: config.get_groups_url, qs: params}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                     groups = JSON.parse(body)['groups'];
@@ -54,9 +54,11 @@ module.exports = function(app, passport) {
     });
     
     app.post('/send_notification', function(req, res){
+        params = req.body;
+        params['client_id'] = req.user.id;
         request.post(
             config.send_notification_url,
-            { form: req.body },
+            { form: params },
             function (error, response, body) {
                 if (!error && response.statusCode == 200) {
                     console.log(body);
@@ -69,7 +71,7 @@ module.exports = function(app, passport) {
     
     //Send permission request
     app.get('/send_permission_request', function(req, res, next) {
-        params = {'website': req.user.local.website}
+        params = {'client_id': req.user.id}
         request({url: config.get_groups_url, qs: params}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                     groups = JSON.parse(body)['groups'];
@@ -82,9 +84,11 @@ module.exports = function(app, passport) {
     });
     
     app.post('/send_permission_request', function(req, res){
+        params = req.body;
+        params['client_id'] = req.user.id;
         request.post(
             config.send_permission_url,
-            { form: req.body },
+            { form: params },
             function (error, response, body) {
                 if (!error && response.statusCode == 200) {
                     console.log(body);
@@ -101,7 +105,9 @@ module.exports = function(app, passport) {
     });
     
     app.post('/create_group', function(req, res, next) {
-        request({url: config.generate_group_url, qs: req.body}, function (error, response, body) {
+        params = req.body
+        params['client_id'] = req.user.id
+        request({url: config.generate_group_url, qs: params}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 if(JSON.parse(body).error == 'IntegrityError'){
                     res.render('create_group.ejs', { 
@@ -118,7 +124,7 @@ module.exports = function(app, passport) {
     });
    
     app.get('/view_groups', function(req, res){
-        params = {'website': req.user.local.website}
+        params = {'client_id': req.user.id}
         request({url: config.get_groups_url, qs: params}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                     groups = JSON.parse(body)['groups'];
@@ -131,7 +137,7 @@ module.exports = function(app, passport) {
     });
 
     app.get('/permission_analytics', function(req, res){
-        params = {"website": req.user.local.website}
+        params = {'client_id': req.user.id}
         request({url: config.get_permission_analytics_url, qs: params}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                     res.render('permission_analytics.ejs', {title: 'Analytics', data: JSON.parse(body)});
@@ -140,7 +146,7 @@ module.exports = function(app, passport) {
     })
 
     app.get('/notification_analytics', function(req, res){
-        params = {"website": req.user.local.website}
+        params = {'client_id': req.user.id}
         request({url: config.get_notification_analytics_url, qs: params}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                     res.render('notification_analytics.ejs', {title: 'Analytics', data: JSON.parse(body)});

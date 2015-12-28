@@ -1,6 +1,23 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+var FileSelector = React.createClass({
+    render: function(){
+    return(
+            <div>
+                <form id="uploadForm"
+                      encType="multipart/form-data"
+                      action="/upload_image"
+                      method="post">
+                  <input type="file" name="userPhoto"></input>
+                  <input type="submit" value="Upload Image" name="submit"></input>
+                  <span id = "status"></span>
+                </form>
+            </div>
+            )
+    }
+});
+
 var Details = React.createClass({
     render: function(){
     return (
@@ -24,5 +41,6 @@ var Details = React.createClass({
 ReactDOM.render(
        <div> 
         <Details />
+        <FileSelector />
        </div>,
 document.getElementById('main'));

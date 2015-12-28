@@ -1,6 +1,18 @@
 // app/routes.js
 var request = require('request');
 var config = require('./../config/config');
+var multer = require('multer');
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, __dirname+'/uploads');
+  },
+  filename: function (req, file, cb) {
+    cb(null, req.user._id.toString());
+  }
+})
+
+var upload = multer({ storage: storage })
 
 module.exports = function(app, passport) {
 
@@ -143,7 +155,7 @@ module.exports = function(app, passport) {
                     res.render('permission_analytics.ejs', {title: 'Analytics', data: JSON.parse(body)});
                 }
         });
-    })
+    });
 
     app.get('/notification_analytics', function(req, res){
         params = {'client_id': req.user.id}
@@ -152,11 +164,12 @@ module.exports = function(app, passport) {
                     res.render('notification_analytics.ejs', {title: 'Analytics', data: JSON.parse(body)});
                 }
         });
-    })
+    });
 
-    app.post('/upload_image', function(req, res){
-        console.log(req.body);
-    })
+    app.post('/upload_image', upload.single('userPhoto'), function (req, res, next) {
+      console.log(req.file);
+      res.render('profile.ejs', {user: req.user});
+    });
 
 };
 

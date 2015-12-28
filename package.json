@@ -21,6 +21,7 @@
     "kerberos": "0.0.17",
     "mongoose": "^4.3.0",
     "morgan": "~1.6.1",
+    "multer": "^1.1.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "react": "^0.14.3",

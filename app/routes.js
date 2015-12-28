@@ -154,6 +154,10 @@ module.exports = function(app, passport) {
         });
     })
 
+    app.post('/upload_image', function(req, res){
+        console.log(req.body);
+    })
+
 };
 
 // route middleware to make sure a user is logged in

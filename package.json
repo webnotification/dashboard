@@ -6,6 +6,8 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "babel-preset-react": "^6.3.13",
+    "babelify": "^7.2.0",
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "~1.13.2",
     "connect-flash": "^0.1.1",
@@ -14,13 +16,18 @@
     "ejs": "^2.3.4",
     "express": "~4.13.1",
     "express-session": "^1.12.1",
+    "griddle-react": "^0.3.0",
     "jade": "~1.11.0",
     "kerberos": "0.0.17",
     "mongoose": "^4.3.0",
     "morgan": "~1.6.1",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
+    "react": "^0.14.3",
+    "react-dom": "^0.14.3",
     "request": "^2.67.0",
-    "serve-favicon": "~2.3.0"
-  }
+    "serve-favicon": "~2.3.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {}
 }

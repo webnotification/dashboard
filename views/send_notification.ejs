@@ -1,4 +1,4 @@
-<!-- views/send.ejs -->
+<!-- views/send_notification.ejs -->
 <html>
 <head>
     <title>Send Message</title>
@@ -14,16 +14,16 @@
     React.render(
     <div>
         <h2> Send Message </h2>
-        <form name="send_message" action="/send"  method="post">
+        <form name="send_message" action="/send_notification"  method="post">
             <div>
                 <label>Website</label>
                 <input name="website" type="text" value="<%=website%>"></input>
             </div>
             <div>
                 <label>Group</label>
-                <select name="group_name">
+                <select name="group_id">
                     <% for(var i=0; i<groups.length; i++) {%>
-                        <option value= "<%= groups[i].group_name %>" > <%= groups[i].group_name %>(<%= groups[i].percentage %>%) </option>
+                        <option value= "<%= groups[i].id %>" > <%= groups[i].name %>(<%= groups[i].percentage %>%) </option>
                     <% } %>   
                 </select>
             </div>

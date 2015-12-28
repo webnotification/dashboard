@@ -2,6 +2,8 @@
 
 var LocalStrategy   = require('passport-local').Strategy;
 var User            = require('../app/models/user');
+var request = require('request');
+var config  = require('./config');
 
 module.exports = function(passport) {
 
@@ -37,6 +39,14 @@ module.exports = function(passport) {
                         newUser.save(function(err) {
                             if (err)
                                 throw err;
+                            params = {'client_id':newUser.id,
+                                      'website': newUser.local.website            
+                            }
+                            request({url: config.save_client_url, qs: params}, function (error, response, body) {
+                                if (!error && response.statusCode == 200) {
+                                        console.log('client_saved');
+                                    }
+                            });
                             return done(null, newUser);
                         });
                     }

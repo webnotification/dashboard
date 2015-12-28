@@ -1,0 +1,15 @@
+<!-- views/analytics.ejs -->
+<html>
+<head>
+    <title> <%= title %> </title>
+</head>
+<body>
+    <div id='main'>
+    </div>
+    <script>
+        var data = <%- JSON.stringify(data) %>;
+    </script>
+    <script src="javascripts/permission_analytics_final.js"></script>
+</body>
+</html>
+

@@ -2,10 +2,14 @@
 var request = require('request');
 var config = require('./../config/config');
 var multer = require('multer');
+var fs = require('fs');
+var AWS = require('aws-sdk');
+AWS.config.region = 'ap-southeast-1';
+var s3_bucket_name = 'notificationicons';
 
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, __dirname+'/uploads');
+    cb(null, __dirname+'/../uploads');
   },
   filename: function (req, file, cb) {
     cb(null, req.user._id.toString());
@@ -167,8 +171,18 @@ module.exports = function(app, passport) {
     });
 
     app.post('/upload_image', upload.single('userPhoto'), function (req, res, next) {
-      console.log(req.file);
-      res.render('profile.ejs', {user: req.user});
+        var bodyStream = fs.createReadStream(req.file.path);
+        var s3 = new AWS.S3(); 
+        s3.createBucket({Bucket: s3_bucket_name}, function() {
+            var params = {Bucket: s3_bucket_name, Key: req.user._id.toString(), Body: bodyStream};
+            s3.putObject(params, function(err, data) {
+              if (err)       
+                  console.log(err)     
+              else
+                  console.log("Successfully uploaded data to myBucket/myKey");   
+            });
+        });
+        res.render('profile.ejs', {user: req.user});
     });
 
 };

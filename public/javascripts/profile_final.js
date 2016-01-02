@@ -18927,6 +18927,27 @@ module.exports = require('./lib/React');
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+var FileSelector = React.createClass({
+    displayName: 'FileSelector',
+
+    render: function () {
+        return React.createElement(
+            'div',
+            null,
+            React.createElement(
+                'form',
+                { id: 'uploadForm',
+                    encType: 'multipart/form-data',
+                    action: '/upload_image',
+                    method: 'post' },
+                React.createElement('input', { type: 'file', name: 'userPhoto' }),
+                React.createElement('input', { type: 'submit', value: 'Upload Image', name: 'submit' }),
+                React.createElement('span', { id: 'status' })
+            )
+        );
+    }
+});
+
 var Details = React.createClass({
     displayName: 'Details',
 
@@ -19044,7 +19065,8 @@ var Details = React.createClass({
 ReactDOM.render(React.createElement(
     'div',
     null,
-    React.createElement(Details, null)
+    React.createElement(Details, null),
+    React.createElement(FileSelector, null)
 ), document.getElementById('main'));
 
 },{"react":157,"react-dom":28}],159:[function(require,module,exports){

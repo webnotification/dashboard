@@ -18927,6 +18927,18 @@ module.exports = require('./lib/React');
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+var NotificationImage = React.createClass({
+    displayName: 'NotificationImage',
+
+    render: function () {
+        return React.createElement(
+            'div',
+            null,
+            React.createElement('img', { src: image })
+        );
+    }
+});
+
 var FileSelector = React.createClass({
     displayName: 'FileSelector',
 
@@ -18934,6 +18946,11 @@ var FileSelector = React.createClass({
         return React.createElement(
             'div',
             null,
+            React.createElement(
+                'label',
+                null,
+                'Upload Image'
+            ),
             React.createElement(
                 'form',
                 { id: 'uploadForm',
@@ -19066,6 +19083,7 @@ ReactDOM.render(React.createElement(
     'div',
     null,
     React.createElement(Details, null),
+    React.createElement(NotificationImage, null),
     React.createElement(FileSelector, null)
 ), document.getElementById('main'));
 

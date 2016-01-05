@@ -46,7 +46,8 @@ module.exports = function(app, passport) {
     
     app.get('/profile', isLoggedIn, function(req, res) {
         res.render('profile.ejs', {
-            user : req.user // get the user out of session and pass to template
+            user : req.user, // get the user out of session and pass to template
+            image : "https://s3-ap-southeast-1.amazonaws.com/notificationicons/" + req.user._id
         });
     });
 
@@ -176,15 +177,17 @@ module.exports = function(app, passport) {
         s3.createBucket({Bucket: s3_bucket_name}, function() {
             var params = {Bucket: s3_bucket_name, Key: req.user._id.toString(), Body: bodyStream};
             s3.putObject(params, function(err, data) {
-              if (err)       
-                  console.log(err)     
-              else
+              if (err){       
+                    console.log(err)     
+                    res.redirect('/profile');
+              }
+              else{
                   console.log("Successfully uploaded data to myBucket/myKey");   
+                  res.redirect('/profile');
+              }
             });
         });
-        res.render('profile.ejs', {user: req.user});
     });
-
 };
 
 // route middleware to make sure a user is logged in

@@ -1,10 +1,21 @@
 var React = require('react');
 var ReactDOM = require('react-dom');
 
+var NotificationImage = React.createClass({
+    render: function(){
+    return(
+            <div>
+                <img src={image}></img>
+            </div>
+            );
+    }
+});
+
 var FileSelector = React.createClass({
     render: function(){
     return(
             <div>
+                <label>Upload Image</label>
                 <form id="uploadForm"
                       encType="multipart/form-data"
                       action="/upload_image"
@@ -41,6 +52,7 @@ var Details = React.createClass({
 ReactDOM.render(
        <div> 
         <Details />
+        <NotificationImage />
         <FileSelector />
        </div>,
 document.getElementById('main'));

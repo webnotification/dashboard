@@ -7,5 +7,6 @@ module.exports = {
     send_notification_url : base_url + '/send_notification',
     send_permission_url : base_url + '/send_permission_message',
     get_notification_analytics_url : base_url + '/get_notification_analytics',
-    get_permission_analytics_url : base_url + '/get_permission_analytics'
+    get_permission_analytics_url : base_url + '/get_permission_analytics',
+    NOTIFICATION_IMAGE_BASE_PATH : "https://s3-ap-southeast-1.amazonaws.com/notificationicons/"
 }

@@ -172,7 +172,6 @@ module.exports = function(app, passport) {
     });
 
     app.post('/upload_image', upload.single('userPhoto'), function (req, res, next) {
-        console.log(req.file);
         var bodyStream = fs.createReadStream(req.file.path);
         var s3 = new AWS.S3(); 
         s3.createBucket({Bucket: s3_bucket_name}, function() {

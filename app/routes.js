@@ -12,7 +12,7 @@ var storage = multer.diskStorage({
     cb(null, __dirname+'/../uploads');
   },
   filename: function (req, file, cb) {
-    cb(null, req.user._id.toString());
+    cb(null, req.user.id);
   }
 })
 
@@ -47,7 +47,7 @@ module.exports = function(app, passport) {
     app.get('/profile', isLoggedIn, function(req, res) {
         res.render('profile.ejs', {
             user : req.user, // get the user out of session and pass to template
-            image : config.NOTIFICATION_IMAGE_BASE_PATH + req.user._id
+            image : config.NOTIFICATION_IMAGE_BASE_PATH + req.user.id
         });
     });
 
@@ -172,10 +172,11 @@ module.exports = function(app, passport) {
     });
 
     app.post('/upload_image', upload.single('userPhoto'), function (req, res, next) {
+        console.log(req.file);
         var bodyStream = fs.createReadStream(req.file.path);
         var s3 = new AWS.S3(); 
         s3.createBucket({Bucket: s3_bucket_name}, function() {
-            var params = {Bucket: s3_bucket_name, Key: req.user._id.toString(), Body: bodyStream};
+            var params = {Bucket: s3_bucket_name, Key: req.user.id, Body: bodyStream};
             s3.putObject(params, function(err, data) {
               if (err)
                   console.log(err)     

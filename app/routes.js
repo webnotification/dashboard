@@ -47,7 +47,7 @@ module.exports = function(app, passport) {
     app.get('/profile', isLoggedIn, function(req, res) {
         res.render('profile.ejs', {
             user : req.user, // get the user out of session and pass to template
-            image : "https://s3-ap-southeast-1.amazonaws.com/notificationicons/" + req.user._id
+            image : config.NOTIFICATION_IMAGE_BASE_PATH + req.user._id
         });
     });
 

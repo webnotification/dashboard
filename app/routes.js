@@ -179,12 +179,11 @@ module.exports = function(app, passport) {
             s3.putObject(params, function(err, data) {
               if (err){       
                     console.log(err)     
-                    res.redirect('/profile');
               }
               else{
                   console.log("Successfully uploaded data to myBucket/myKey");   
-                  res.redirect('/profile');
               }
+              res.redirect('/profile');
             });
         });
     });

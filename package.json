@@ -3,7 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "build:profile": "browserify -t [ babelify --presets [ react ] ] public/javascripts/profile.js -o public/javascripts/profile_final.js",
+    "build:permission_analytics": "browserify -t [ babelify --presets [ react ] ] public/javascripts/permission_analytics.js -o public/javascripts/permission_analytics_final.js",
+    "build:notification_analytics": "browserify -t [ babelify --presets [ react ] ] public/javascripts/notification_analytics.js -o public/javascripts/notification_analytics_final.js",
+    "build": "npm run build:profile && npm run build:permission_analytics && npm run build:notification_analytics"
+
   },
   "dependencies": {
     "aws-sdk": "^2.2.26",

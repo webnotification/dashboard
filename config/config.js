@@ -1,4 +1,5 @@
 var base_url = 'http://127.0.0.1:8000/notification'; 
+//var base_url = 'https://api.flashnotifier.com/notification';
 var IMAGE_SIZE_THRESHOLD = 50000;
 
 module.exports = {

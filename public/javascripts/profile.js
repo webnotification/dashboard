@@ -15,7 +15,12 @@ var FileSelector = React.createClass({
     render: function(){
     return(
             <div>
-                <label>Upload Image</label>
+                <div>
+                    <label>Upload Image</label>
+                </div>
+                <div>
+                    <label><font color="red">{err_msg}</font></label>
+                </div>
                 <form id="uploadForm"
                       encType="multipart/form-data"
                       action="/upload_image"

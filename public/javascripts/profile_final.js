@@ -18947,9 +18947,26 @@ var FileSelector = React.createClass({
             'div',
             null,
             React.createElement(
-                'label',
+                'div',
                 null,
-                'Upload Image'
+                React.createElement(
+                    'label',
+                    null,
+                    'Upload Image'
+                )
+            ),
+            React.createElement(
+                'div',
+                null,
+                React.createElement(
+                    'label',
+                    null,
+                    React.createElement(
+                        'font',
+                        { color: 'red' },
+                        err_msg
+                    )
+                )
             ),
             React.createElement(
                 'form',

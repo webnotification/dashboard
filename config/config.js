@@ -1,4 +1,5 @@
 var base_url = 'http://127.0.0.1:8000/notification'; 
+var IMAGE_SIZE_THRESHOLD = 50000;
 
 module.exports = {
     get_groups_url : base_url + '/get_groups',
@@ -8,5 +9,7 @@ module.exports = {
     send_permission_url : base_url + '/send_permission_message',
     get_notification_analytics_url : base_url + '/get_notification_analytics',
     get_permission_analytics_url : base_url + '/get_permission_analytics',
-    NOTIFICATION_IMAGE_BASE_PATH : "https://s3-ap-southeast-1.amazonaws.com/notificationicons/"
+    NOTIFICATION_IMAGE_BASE_PATH : "https://s3-ap-southeast-1.amazonaws.com/notificationicons/",
+    IMAGE_SIZE_THRESHOLD : IMAGE_SIZE_THRESHOLD,  //in Bytes
+    IMAGE_SIZE_MESSAGE : 'File size is bigger than '+IMAGE_SIZE_THRESHOLD+' bytes'
 }

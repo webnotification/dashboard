@@ -62,7 +62,7 @@ module.exports = function(app, passport) {
     });
 
     //Send notification
-    app.get('/send_notification', function(req, res, next) {
+    app.get('/send_notification', isLoggedIn, function(req, res, next) {
         params = {'client_id': req.user.id}
         request({url: config.get_groups_url, qs: params}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
@@ -92,7 +92,7 @@ module.exports = function(app, passport) {
     
     
     //Send permission request
-    app.get('/send_permission_request', function(req, res, next) {
+    app.get('/send_permission_request', isLoggedIn, function(req, res, next) {
         params = {'client_id': req.user.id}
         request({url: config.get_groups_url, qs: params}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
@@ -122,7 +122,7 @@ module.exports = function(app, passport) {
     
     
     //Create group
-    app.get('/create_group', function(req, res, next) {
+    app.get('/create_group', isLoggedIn, function(req, res, next) {
             res.render('create_group.ejs', { title: 'Create group', website: req.user.local.website, err_msg: '' });
     });
     
@@ -145,7 +145,7 @@ module.exports = function(app, passport) {
         });
     });
    
-    app.get('/view_groups', function(req, res){
+    app.get('/view_groups', isLoggedIn, function(req, res){
         params = {'client_id': req.user.id}
         request({url: config.get_groups_url, qs: params}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
@@ -158,7 +158,7 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.get('/permission_analytics', function(req, res){
+    app.get('/permission_analytics', isLoggedIn, function(req, res){
         params = {'client_id': req.user.id}
         request({url: config.get_permission_analytics_url, qs: params}, function (error, response, body) {
             if (!error && response.statusCode == 200) {
@@ -167,7 +167,7 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.get('/notification_analytics', function(req, res){
+    app.get('/notification_analytics', isLoggedIn, function(req, res){
         params = {'client_id': req.user.id}
         request({url: config.get_notification_analytics_url, qs: params}, function (error, response, body) {
             if (!error && response.statusCode == 200) {

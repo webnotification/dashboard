@@ -33,6 +33,14 @@ var Details = React.createClass({
                 <input name="target_url" type="text"></input>
             </div>
             <div>
+                <label>Date</label>
+                <input type="date" name="date"></input>
+            </div>
+            <div>
+                <label>Time</label>
+                <input type="time" name="time"></input>
+            </div>
+            <div>
                 <input type="submit" value="Send"></input>
             </div>
         </form>
@@ -45,6 +53,8 @@ var Details = React.createClass({
 });
 
 ReactDOM.render(
-        <Details />,
+    <div>
+        <Details />
+    </div>,
 document.getElementById('main'));
 

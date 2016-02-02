@@ -10,45 +10,11 @@
 
 <body>
     <div id='main'>
-    <script type="text/babel">
-    React.render(
-    <div>
-        <h2> Send Message </h2>
-        <form name="send_message" action="/send_notification"  method="post">
-            <div>
-                <label>Website</label>
-                <input name="website" type="text" value="<%=website%>"></input>
-            </div>
-            <div>
-                <label>Group</label>
-                <select name="group_id">
-                    <% for(var i=0; i<groups.length; i++) {%>
-                        <option value= "<%= groups[i].id %>" > <%= groups[i].name %>(<%= groups[i].percentage %>%) </option>
-                    <% } %>   
-                </select>
-            </div>
-            <div> 
-                <label>Title</label>
-                <input name="title"  type="text"  width="400px"></input>
-            </div>
-            <div>
-                <label>Message</label>
-                <textarea name="message" type="description"></textarea>
-            </div>
-            <div>
-                <label>Target URL</label>
-                <input name="target_url" type="text"></input>
-            </div>
-            <div>
-                <input type="submit" value="Send"></input>
-            </div>
-        </form>
-        <form action="javascript:history.back()" method="get">
-            <button>Back</button>
-        </form>
-    </div>,
-    document.getElementById('main'));
+    <script>
+        var groups = <%- JSON.stringify(groups) %>;
+        var website = <%- JSON.stringify(website) %>;
     </script>
+    <script src="javascripts/send_notification_final.js"></script>
     </div>
 </body>
 </html>

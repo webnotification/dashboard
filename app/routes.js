@@ -75,7 +75,7 @@ module.exports = function(app, passport) {
         });
     });
     
-    app.post('/send_notification', function(req, res){
+    app.post('/send_notification', isLoggedIn, function(req, res){
         params = req.body;
         params['client_id'] = req.user.id;
         request.post(
@@ -105,7 +105,7 @@ module.exports = function(app, passport) {
         });
     });
     
-    app.post('/send_permission_request', function(req, res){
+    app.post('/send_permission_request', isLoggedIn, function(req, res){
         params = req.body;
         params['client_id'] = req.user.id;
         request.post(
@@ -126,7 +126,7 @@ module.exports = function(app, passport) {
             res.render('create_group.ejs', { title: 'Create group', website: req.user.local.website, err_msg: '' });
     });
     
-    app.post('/create_group', function(req, res, next) {
+    app.post('/create_group', isLoggedIn, function(req, res, next) {
         params = req.body
         params['client_id'] = req.user.id
         request({url: config.generate_group_url, qs: params}, function (error, response, body) {
@@ -176,7 +176,7 @@ module.exports = function(app, passport) {
         });
     });
 
-    app.post('/upload_image', upload.single('userPhoto'), function (req, res, next) {
+    app.post('/upload_image', isLoggedIn, upload.single('userPhoto'), function (req, res, next) {
         if(req.file.size < config.IMAGE_SIZE_THRESHOLD){
             var bodyStream = fs.createReadStream(req.file.path);
             var s3 = new AWS.S3(); 

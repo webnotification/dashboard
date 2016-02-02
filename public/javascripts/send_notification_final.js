@@ -521,11 +521,14 @@ module.exports = focusNode;
  * @typechecks
  */
 
+/* eslint-disable fb-www/typeof-undefined */
+
 /**
  * Same as document.activeElement but wraps in a try-catch block. In IE it is
  * not safe to call document.activeElement if there is nothing focused.
  *
- * The activeElement will be null only if the document or document body is not yet defined.
+ * The activeElement will be null only if the document or document body is not
+ * yet defined.
  */
 'use strict';
 
@@ -533,7 +536,6 @@ function getActiveElement() /*?DOMElement*/{
   if (typeof document === 'undefined') {
     return null;
   }
-
   try {
     return document.activeElement || document.body;
   } catch (e) {
@@ -776,7 +778,7 @@ module.exports = hyphenateStyleName;
  * will remain to ensure logic does not differ in production.
  */
 
-var invariant = function (condition, format, a, b, c, d, e, f) {
+function invariant(condition, format, a, b, c, d, e, f) {
   if ("" !== 'production') {
     if (format === undefined) {
       throw new Error('invariant requires an error message argument');
@@ -790,15 +792,16 @@ var invariant = function (condition, format, a, b, c, d, e, f) {
     } else {
       var args = [a, b, c, d, e, f];
       var argIndex = 0;
-      error = new Error('Invariant Violation: ' + format.replace(/%s/g, function () {
+      error = new Error(format.replace(/%s/g, function () {
         return args[argIndex++];
       }));
+      error.name = 'Invariant Violation';
     }
 
     error.framesToPop = 1; // we don't care about invariant's own frame
     throw error;
   }
-};
+}
 
 module.exports = invariant;
 },{}],17:[function(require,module,exports){
@@ -1060,18 +1063,23 @@ module.exports = performance || {};
 'use strict';
 
 var performance = require('./performance');
-var curPerformance = performance;
+
+var performanceNow;
 
 /**
  * Detect if we can use `window.performance.now()` and gracefully fallback to
  * `Date.now()` if it doesn't exist. We need to support Firefox < 15 for now
  * because of Facebook's testing infrastructure.
  */
-if (!curPerformance || !curPerformance.now) {
-  curPerformance = Date;
+if (performance.now) {
+  performanceNow = function () {
+    return performance.now();
+  };
+} else {
+  performanceNow = function () {
+    return Date.now();
+  };
 }
-
-var performanceNow = curPerformance.now.bind(curPerformance);
 
 module.exports = performanceNow;
 },{"./performance":23}],25:[function(require,module,exports){
@@ -4547,8 +4555,8 @@ var HTMLDOMPropertyConfig = {
      */
     // autoCapitalize and autoCorrect are supported in Mobile Safari for
     // keyboard hints.
-    autoCapitalize: null,
-    autoCorrect: null,
+    autoCapitalize: MUST_USE_ATTRIBUTE,
+    autoCorrect: MUST_USE_ATTRIBUTE,
     // autoSave allows WebKit/Blink to persist values of input fields on page reloads
     autoSave: null,
     // color is for Safari mask-icon link
@@ -4579,9 +4587,7 @@ var HTMLDOMPropertyConfig = {
     httpEquiv: 'http-equiv'
   },
   DOMPropertyNames: {
-    autoCapitalize: 'autocapitalize',
     autoComplete: 'autocomplete',
-    autoCorrect: 'autocorrect',
     autoFocus: 'autofocus',
     autoPlay: 'autoplay',
     autoSave: 'autosave',
@@ -8995,7 +9001,7 @@ function updateOptionsIfPendingUpdateAndMounted() {
     var value = LinkedValueUtils.getValue(props);
 
     if (value != null) {
-      updateOptions(this, props, value);
+      updateOptions(this, Boolean(props.multiple), value);
     }
   }
 }
@@ -10067,7 +10073,9 @@ var DOM_OPERATION_TYPES = {
   'setValueForProperty': 'update attribute',
   'setValueForAttribute': 'update attribute',
   'deleteValueForProperty': 'remove attribute',
-  'dangerouslyReplaceNodeWithMarkupByID': 'replace'
+  'setValueForStyles': 'update styles',
+  'replaceNodeWithMarkup': 'replace',
+  'updateTextContent': 'set textContent'
 };
 
 function getTotalTime(measurements) {
@@ -15085,7 +15093,7 @@ module.exports = ReactUpdates;
 
 'use strict';
 
-module.exports = '0.14.3';
+module.exports = '0.14.6';
 },{}],113:[function(require,module,exports){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -18801,169 +18809,121 @@ module.exports = require('./lib/React');
 var React = require('react');
 var ReactDOM = require('react-dom');
 
-var NotificationImage = React.createClass({
-    displayName: 'NotificationImage',
-
-    render: function () {
-        return React.createElement(
-            'div',
-            null,
-            React.createElement('img', { src: image })
-        );
-    }
-});
-
-var FileSelector = React.createClass({
-    displayName: 'FileSelector',
-
-    render: function () {
-        return React.createElement(
-            'div',
-            null,
-            React.createElement(
-                'div',
-                null,
-                React.createElement(
-                    'label',
-                    null,
-                    'Upload Image'
-                )
-            ),
-            React.createElement(
-                'div',
-                null,
-                React.createElement(
-                    'label',
-                    null,
-                    React.createElement(
-                        'font',
-                        { color: 'red' },
-                        err_msg
-                    )
-                )
-            ),
-            React.createElement(
-                'form',
-                { id: 'uploadForm',
-                    encType: 'multipart/form-data',
-                    action: '/upload_image',
-                    method: 'post' },
-                React.createElement('input', { type: 'file', name: 'userPhoto' }),
-                React.createElement('input', { type: 'submit', value: 'Upload Image', name: 'submit' }),
-                React.createElement('span', { id: 'status' })
-            )
-        );
-    }
-});
-
 var Details = React.createClass({
     displayName: 'Details',
 
     render: function () {
+
+        var group_options = groups.map(function (group) {
+            return React.createElement(
+                'option',
+                { value: group.id },
+                ' ',
+                group.name,
+                '(',
+                group.percentage,
+                ') '
+            );
+        });
+
         return React.createElement(
             'div',
             null,
             React.createElement(
                 'h2',
                 null,
-                ' Profile '
+                ' Send Message '
             ),
             React.createElement(
-                'h5',
-                null,
+                'form',
+                { name: 'send_message', action: '/send_notification', method: 'post' },
                 React.createElement(
-                    'strong',
+                    'div',
                     null,
-                    'id'
+                    React.createElement(
+                        'label',
+                        null,
+                        'Website'
+                    ),
+                    React.createElement('input', { name: 'website', type: 'text', value: website })
                 ),
-                ': ',
-                user._id
-            ),
-            React.createElement(
-                'h5',
-                null,
                 React.createElement(
-                    'strong',
+                    'div',
                     null,
-                    'email'
+                    React.createElement(
+                        'label',
+                        null,
+                        'Group'
+                    ),
+                    React.createElement(
+                        'select',
+                        { name: 'group_id' },
+                        group_options
+                    )
                 ),
-                ': ',
-                user.local.email,
-                ' '
-            ),
-            React.createElement(
-                'h5',
-                null,
                 React.createElement(
-                    'strong',
+                    'div',
                     null,
-                    'website'
+                    React.createElement(
+                        'label',
+                        null,
+                        'Title'
+                    ),
+                    React.createElement('input', { name: 'title', type: 'text', width: '400px' })
                 ),
-                ': ',
-                user.local.website,
-                ' '
-            ),
-            React.createElement(
-                'h4',
-                null,
                 React.createElement(
-                    'a',
-                    { href: '/send_permission_request' },
-                    ' send permission request '
+                    'div',
+                    null,
+                    React.createElement(
+                        'label',
+                        null,
+                        'Message'
+                    ),
+                    React.createElement('textarea', { name: 'message', type: 'description' })
+                ),
+                React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'label',
+                        null,
+                        'Target URL'
+                    ),
+                    React.createElement('input', { name: 'target_url', type: 'text' })
+                ),
+                React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'label',
+                        null,
+                        'Date'
+                    ),
+                    React.createElement('input', { type: 'date', name: 'date' })
+                ),
+                React.createElement(
+                    'div',
+                    null,
+                    React.createElement(
+                        'label',
+                        null,
+                        'Time'
+                    ),
+                    React.createElement('input', { type: 'time', name: 'time' })
+                ),
+                React.createElement(
+                    'div',
+                    null,
+                    React.createElement('input', { type: 'submit', value: 'Send' })
                 )
             ),
             React.createElement(
-                'h4',
-                null,
+                'form',
+                { action: 'javascript:history.back()', method: 'get' },
                 React.createElement(
-                    'a',
-                    { href: '/send_notification' },
-                    ' send notification '
-                )
-            ),
-            React.createElement(
-                'h4',
-                null,
-                React.createElement(
-                    'a',
-                    { href: '/create_group' },
-                    ' create group'
-                )
-            ),
-            React.createElement(
-                'h4',
-                null,
-                React.createElement(
-                    'a',
-                    { href: '/view_groups' },
-                    ' view groups'
-                )
-            ),
-            React.createElement(
-                'h4',
-                null,
-                React.createElement(
-                    'a',
-                    { href: '/notification_analytics' },
-                    ' notification analytics'
-                )
-            ),
-            React.createElement(
-                'h4',
-                null,
-                React.createElement(
-                    'a',
-                    { href: '/permission_analytics' },
-                    ' permission analytics'
-                )
-            ),
-            React.createElement(
-                'h4',
-                null,
-                React.createElement(
-                    'a',
-                    { href: '/logout' },
-                    'logout'
+                    'button',
+                    null,
+                    'Back'
                 )
             )
         );
@@ -18973,9 +18933,7 @@ var Details = React.createClass({
 ReactDOM.render(React.createElement(
     'div',
     null,
-    React.createElement(Details, null),
-    React.createElement(NotificationImage, null),
-    React.createElement(FileSelector, null)
+    React.createElement(Details, null)
 ), document.getElementById('main'));
 
 },{"react":157,"react-dom":28}]},{},[158]);
